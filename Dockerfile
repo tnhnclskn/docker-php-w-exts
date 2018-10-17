@@ -13,9 +13,21 @@ RUN apt-get update && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug
 
+ARG user=phpfpm
+ARG group=phpfpm
+ARG uid=1000
+ARG gid=1000
+ARG WEB_HOME=/var/www/html
+
+RUN mkdir -p $WEB_HOME && \
+  chown ${uid}:${gid} $WEB_HOME && \
+  groupadd -g ${gid} ${group} && \
+  useradd -d "$WEB_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
+
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
+USER ${user}
 
 WORKDIR /var/www/html
 
