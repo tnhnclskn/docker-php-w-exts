@@ -9,7 +9,9 @@ RUN apt-get update && \
     docker-php-ext-install intl && \
     docker-php-ext-install opcache && \
     docker-php-ext-install zip && \
-    docker-php-ext-install gd
+    docker-php-ext-install gd && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
